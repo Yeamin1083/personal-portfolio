@@ -123,7 +123,7 @@ export default function SectionHoverEffect({
 
   return (
     <Tag
-      ref={containerRef as React.RefObject<HTMLElement>}
+      ref={containerRef as any}
       id={id}
       className={`${className} relative`}
       onMouseMove={handleMouseMove}

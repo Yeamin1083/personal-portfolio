@@ -57,8 +57,8 @@ function AbstractLaptop() {
 
 export default function LaptopModelScene() {
   return (
-    <div className="fixed inset-0 w-screen h-screen -z-10 opacity-80 pointer-events-none">
-      <Canvas camera={{ position: [0, 2, 6], fov: 45 }} className="pointer-events-auto">
+    <div className="w-full h-full relative">
+      <Canvas camera={{ position: [0, 2, 6], fov: 45 }} className="w-full h-full">
         <ambientLight intensity={0.5} />
         <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} castShadow />
         

@@ -10,10 +10,53 @@
   --accent: #00E5FF;
 }
 
+body.theme-cyan {
+  --accent: #00E5FF;
+}
+body.theme-green {
+  --accent: #10B981;
+}
+body.theme-pink {
+  --accent: #EC4899;
+}
+body.theme-amber {
+  --accent: #F59E0B;
+}
+
 body {
   color: var(--text-main);
   background: var(--bg-base);
   overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Font smoothing helper classes */
+.font-orbitron {
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.text-zinc-400 {
+  color: rgba(161, 161, 170, 0.9);
+  line-height: 1.625;
+}
+
+/* Custom scrollbars */
+.select-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.select-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.1);
+}
+.select-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+}
+.select-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(6,182,212,0.3);
 }
 
 /* Lenis smooth scrolling base */

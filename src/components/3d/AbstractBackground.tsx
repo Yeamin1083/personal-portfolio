@@ -1,53 +1,102 @@
 "use client";
 
-import { useRef } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Environment, Float, Sphere, MeshDistortMaterial, Stars } from "@react-three/drei";
-import * as THREE from "three";
-
-function AnimatedShape() {
-  const meshRef = useRef<THREE.Mesh>(null);
-
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x = state.clock.elapsedTime * 0.1;
-      meshRef.current.rotation.y = state.clock.elapsedTime * 0.15;
-    }
-  });
-
-  return (
-    <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
-      <Sphere ref={meshRef} args={[1.5, 64, 64]} position={[0, 0, 0]}>
-        <MeshDistortMaterial
-          color="#121214"
-          attach="material"
-          distort={0.4}
-          speed={1.5}
-          roughness={0.2}
-          metalness={0.8}
-          emissive="#00E5FF"
-          emissiveIntensity={0.15}
-          wireframe={true}
-        />
-      </Sphere>
-      {/* Inner glowing core */}
-      <Sphere args={[0.8, 32, 32]}>
-        <meshBasicMaterial color="#00E5FF" transparent opacity={0.1} />
-      </Sphere>
-    </Float>
-  );
-}
+import React, { useEffect, useRef } from "react";
 
 export default function AbstractBackground() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let animationId: number;
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resize();
+    window.addEventListener("resize", resize);
+
+    // Create small drifting stars
+    const starsCount = 40;
+    const stars: Array<{ x: number; y: number; size: number; speed: number; alpha: number }> = [];
+    
+    for (let i = 0; i < starsCount; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 1.5 + 0.5,
+        speed: Math.random() * 0.15 + 0.05,
+        alpha: Math.random() * 0.5 + 0.2
+      });
+    }
+
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Draw grid lines
+      ctx.strokeStyle = "rgba(6, 182, 212, 0.02)";
+      ctx.lineWidth = 1;
+      const gridSize = 40;
+      
+      for (let x = 0; x < canvas.width; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+      
+      for (let y = 0; y < canvas.height; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+
+      // Draw drifting particles
+      for (let i = 0; i < starsCount; i++) {
+        const s = stars[i];
+        ctx.fillStyle = `rgba(0, 229, 255, ${s.alpha})`;
+        ctx.shadowBlur = s.size * 3;
+        ctx.shadowColor = "rgba(0, 229, 255, 0.8)";
+        
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        ctx.fill();
+        
+        s.y -= s.speed;
+        if (s.y < -10) {
+          s.y = canvas.height + 10;
+          s.x = Math.random() * canvas.width;
+        }
+      }
+      
+      ctx.shadowBlur = 0; // reset
+      animationId = requestAnimationFrame(draw);
+    };
+
+    draw();
+
+    return () => {
+      window.removeEventListener("resize", resize);
+      cancelAnimationFrame(animationId);
+    };
+  }, []);
+
   return (
-    <div className="fixed inset-0 w-screen h-screen -z-10 pointer-events-none bg-[radial-gradient(ellipse_at_center,rgba(0,229,255,0.05)_0%,rgba(10,10,11,1)_70%)]">
-      <Canvas camera={{ position: [0, 0, 6], fov: 45 }} className="pointer-events-auto">
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 10, 5]} intensity={1} color="#00E5FF" />
-        <Stars radius={100} depth={50} count={3000} factor={4} saturation={0} fade speed={1} />
-        <AnimatedShape />
-        <Environment preset="night" />
-      </Canvas>
+    <div className="fixed inset-0 w-screen h-screen -z-10 bg-zinc-950">
+      {/* Volumetric Radial Gradient behind active content */}
+      <div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "radial-gradient(circle at center, rgba(6, 182, 212, 0.08) 0%, rgba(9, 9, 11, 1) 75%)"
+        }}
+      />
+      <canvas ref={canvasRef} className="w-full h-full opacity-60" />
     </div>
   );
 }
