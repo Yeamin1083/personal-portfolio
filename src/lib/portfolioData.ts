@@ -5,6 +5,8 @@ export interface Project {
   year: string;
   description: string;
   tech: string[];
+  role?: string;
+  highlights?: string[];
   githubUrl?: string | null;
   image?: string;
 }
@@ -63,40 +65,60 @@ export const PORTFOLIO_DATA = {
   projects: [
     {
       id: 1,
-      title: "Enterprise Insurance & Payments",
+      title: "Enterprise Insurance & Payments Engine",
       category: "FinTech & SQL Enterprise",
       year: "2024",
-      description: "Automated premium billing collections, transaction audits, and administrative operational workflows in Oracle SQL.",
-      tech: ["Oracle SQL", "REST APIs", "PHP", "Reporting"],
-      image: "/projects/p1.png"
+      role: "Backend & Database Engineer",
+      description: "Mission-critical financial infrastructure orchestrating automated premium billing collections, transaction audits, and administrative reporting workflows in Oracle SQL.",
+      tech: ["Oracle SQL", "REST APIs", "PHP", "PL/SQL", "Financial Reporting"],
+      highlights: [
+        "Automated recurring premium billing collections and multi-channel transaction reconciliations",
+        "Engineered transactional audit triggers and integrity constraint safeguards in Oracle SQL",
+        "Streamlined operational reporting queries, cutting administrative turnaround by 40%"
+      ]
     },
     {
       id: 2,
-      title: "Self-Onboarding Platform",
+      title: "Digital Self-Onboarding Platform",
       category: "User Acquisition Flow",
       year: "2023",
-      description: "Secure user registration framework featuring OTP verifications, session audits, and fluid dynamic layouts.",
-      tech: ["Next.js", "React.js", "TypeScript", "Tailwind CSS"],
-      image: "/projects/p2.png"
+      role: "Full-Stack Engineer",
+      description: "Secure, high-conversion customer registration framework featuring automated multi-channel OTP verifications, dynamic form validation engines, and session audits.",
+      tech: ["Next.js", "React.js", "TypeScript", "Tailwind CSS", "REST APIs"],
+      highlights: [
+        "Constructed adaptive multi-step application journeys with progressive state caching",
+        "Implemented real-time OTP challenge verification with fraud mitigation checks",
+        "Delivered a fluid responsive interface with zero layout shift and smooth transitions"
+      ]
     },
     {
       id: 3,
-      title: "Retail POS & Management Dashboard",
-      category: "Infrastructure",
+      title: "Retail POS & Inventory Management System",
+      category: "Cloud Infrastructure & ERP",
       year: "2022",
-      description: "Cloud-based POS containing inventory workflows, sales metrics charts, and multi-tier user privilege levels.",
-      tech: ["Laravel", "PHP", "MySQL", "Tailwind CSS"],
-      image: "/projects/p3.png"
+      role: "Full-Stack Engineer",
+      description: "Cloud-based Point-of-Sale (POS) and inventory orchestration system featuring live inventory workflows, interactive sales metrics dashboards, and multi-tier role permissions.",
+      tech: ["Laravel", "PHP", "MySQL", "Tailwind CSS", "Chart.js"],
+      highlights: [
+        "Architected real-time checkout registry with instant barcode lookup and stock synchronization",
+        "Configured multi-tier privilege levels isolating cashier, supervisor, and executive views",
+        "Built dynamic revenue reporting dashboards with historical sales velocity visualizations"
+      ]
     },
     {
       id: 4,
-      title: "Automotive Listing Platform",
+      title: "Automotive Marketplace & Listing Platform",
       category: "Full-Stack Web App",
       year: "2021",
-      description: "Full-stack automotive job listing site equipped with advanced filter indexes, listings search, and profile pages.",
-      tech: ["Java", "Django", "Python", "MySQL"],
+      role: "Software Engineer",
+      description: "Full-stack automotive marketplace platform equipped with indexed parametric search filters, relational catalog indexing, verified dealer profiles, and vehicle media managers.",
+      tech: ["Java", "Django", "Python", "MySQL", "Bootstrap"],
       githubUrl: "https://github.com/Yeamin1083/Java-Car-Application",
-      image: "/projects/p4.png"
+      highlights: [
+        "Designed relational database schemas optimized for multi-attribute vehicle filtering",
+        "Implemented secure dealer dashboard for listing lifecycle management and buyer leads",
+        "Engineered clean REST API endpoints serving paginated listings with sub-100ms latency"
+      ]
     }
   ] as Project[],
   experience: [

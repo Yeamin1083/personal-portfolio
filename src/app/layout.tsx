@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Orbitron } from "next/font/google";
+import { Space_Grotesk, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "@/components/3d/CustomCursor";
 import FaviconAnimator from "@/components/FaviconAnimator";
+import LenisProvider from "@/components/LenisProvider";
 
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space-grotesk" });
-const orbitron = Orbitron({ subsets: ["latin"], variable: "--font-orbitron" });
+const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
 
 export const metadata: Metadata = {
   title: "Yeamin Islam | Software Engineer",
@@ -20,10 +21,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${spaceGrotesk.className} ${spaceGrotesk.variable} ${orbitron.variable} bg-background text-primary antialiased`}>
+      <body className={`${spaceGrotesk.className} ${spaceGrotesk.variable} ${playfair.variable} bg-black text-white antialiased`}>
         <FaviconAnimator frames={["/favicon-0.svg","/favicon-1.svg"]} interval={350} />
         <CustomCursor />
-        {children}
+        <LenisProvider>
+          {children}
+        </LenisProvider>
       </body>
     </html>
   );

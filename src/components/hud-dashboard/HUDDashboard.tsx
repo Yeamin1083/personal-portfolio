@@ -18,11 +18,33 @@ export default function HUDDashboard() {
     new Set(PORTFOLIO_DATA.projects.flatMap((p) => p.tech))
   );
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { staggerChildren: 0.2 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { duration: 0.6, ease: "easeOut" } 
+    }
+  };
+
   return (
     <div className="w-full max-w-6xl mx-auto px-4 md:px-8 py-12 space-y-20 text-zinc-100 select-text">
       
       {/* SECTION 1: HUD HERO PROFILE */}
-      <section className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pt-8 border-b border-white/5 pb-16">
+      <motion.section 
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pt-8 border-b border-white/5 pb-16"
+      >
         <div className="lg:col-span-8 space-y-6">
           <div className="inline-flex items-center gap-2 px-3 py-1 text-xs font-mono border rounded-full border-cyan-500/30 bg-cyan-950/20 text-cyan-400">
             <span className="relative flex w-2 h-2">
@@ -73,16 +95,22 @@ export default function HUDDashboard() {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* SECTION 2: SYSTEM ARSENAL (SKILLS) */}
-      <section className="space-y-8">
-        <div>
+      <motion.section 
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        className="space-y-8"
+      >
+        <motion.div variants={itemVariants}>
           <h2 className="text-2xl font-bold font-orbitron text-white flex items-center gap-2">
             <Sparkles className="text-cyan-400 w-5 h-5 animate-pulse" /> Technical Capabilites
           </h2>
           <p className="text-zinc-400 text-sm mt-1">Classified technical skillsets mapped by stack layer.</p>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {PORTFOLIO_DATA.skills.map((group, idx) => {
@@ -91,8 +119,9 @@ export default function HUDDashboard() {
             const Icon = isBackend ? Server : isFrontend ? Layout : Database;
 
             return (
-              <div
+              <motion.div
                 key={idx}
+                variants={itemVariants}
                 className="border border-white/5 bg-zinc-900/25 p-6 rounded-2xl space-y-4 hover:border-cyan-400/20 transition-all duration-300 relative group overflow-hidden"
               >
                 {/* Accent glow corner */}
@@ -115,15 +144,21 @@ export default function HUDDashboard() {
                     </span>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
-      </section>
+      </motion.section>
 
       {/* SECTION 3: FILTERED PROJECTS */}
-      <section className="space-y-8">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <motion.section 
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        className="space-y-8"
+      >
+        <motion.div variants={itemVariants} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h2 className="text-2xl font-bold font-orbitron text-white flex items-center gap-2">
               <Activity className="text-cyan-400 w-5 h-5" /> Production Releases
@@ -157,9 +192,9 @@ export default function HUDDashboard() {
               </button>
             ))}
           </div>
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {filteredProjects.map((project) => (
             <SectionHoverEffect
               key={project.id}
@@ -214,13 +249,19 @@ export default function HUDDashboard() {
               </div>
             </SectionHoverEffect>
           ))}
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
 
       {/* SECTION 4: TIMELINE */}
-      <section className="grid grid-cols-1 lg:grid-cols-2 gap-12 border-t border-white/5 pt-16">
+      <motion.section 
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        className="grid grid-cols-1 lg:grid-cols-2 gap-12 border-t border-white/5 pt-16"
+      >
         {/* Experience */}
-        <div className="space-y-8">
+        <motion.div variants={itemVariants} className="space-y-8">
           <div>
             <h2 className="text-2xl font-bold font-orbitron text-white">Career Log</h2>
             <p className="text-zinc-400 text-sm mt-1">Professional timeline logs.</p>
@@ -228,23 +269,23 @@ export default function HUDDashboard() {
 
           <div className="border-l border-zinc-800 pl-4 ml-2 space-y-8">
             {PORTFOLIO_DATA.experience.map((exp, idx) => (
-              <div key={idx} className="relative space-y-2">
-                <div className="absolute -left-[21px] top-1.5 w-2.5 h-2.5 rounded-full bg-zinc-950 border border-cyan-400 flex items-center justify-center">
+              <div key={idx} className="relative space-y-2 group">
+                <div className="absolute -left-[21px] top-1.5 w-2.5 h-2.5 rounded-full bg-zinc-950 border border-cyan-400 flex items-center justify-center group-hover:scale-150 transition-transform">
                   <span className="w-1 h-1 rounded-full bg-cyan-400" />
                 </div>
                 <div className="flex justify-between items-start text-xs font-mono text-zinc-400">
                   <span className="text-cyan-400 font-semibold uppercase">{exp.role}</span>
                   <span>{exp.period}</span>
                 </div>
-                <h4 className="text-sm font-bold text-white">{exp.company}</h4>
+                <h4 className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">{exp.company}</h4>
                 <p className="text-zinc-400 text-xs leading-relaxed">{exp.desc}</p>
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Education */}
-        <div className="space-y-8">
+        <motion.div variants={itemVariants} className="space-y-8">
           <div>
             <h2 className="text-2xl font-bold font-orbitron text-white">Academics</h2>
             <p className="text-zinc-400 text-sm mt-1">Degree archives.</p>
@@ -252,31 +293,38 @@ export default function HUDDashboard() {
 
           <div className="border-l border-zinc-800 pl-4 ml-2 space-y-8">
             {PORTFOLIO_DATA.education.map((edu, idx) => (
-              <div key={idx} className="relative space-y-2">
-                <div className="absolute -left-[21px] top-1.5 w-2.5 h-2.5 rounded-full bg-zinc-950 border border-purple-500 flex items-center justify-center">
+              <div key={idx} className="relative space-y-2 group">
+                <div className="absolute -left-[21px] top-1.5 w-2.5 h-2.5 rounded-full bg-zinc-950 border border-purple-500 flex items-center justify-center group-hover:scale-150 transition-transform">
                   <span className="w-1 h-1 rounded-full bg-purple-500" />
                 </div>
                 <div className="text-xs font-mono text-purple-400 font-semibold uppercase">
                   {edu.degree}
                 </div>
-                <h4 className="text-sm font-bold text-white">{edu.institution}</h4>
+                <h4 className="text-sm font-bold text-white group-hover:text-purple-300 transition-colors">{edu.institution}</h4>
                 <p className="text-zinc-400 text-xs leading-relaxed">{edu.details}</p>
               </div>
             ))}
           </div>
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
 
       {/* SECTION 5: CONTACT SECURE FORM */}
-      <section className="border-t border-white/5 pt-16 max-w-xl mx-auto space-y-8">
-        <div className="text-center">
+      <motion.section 
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        className="border-t border-white/5 pt-16 max-w-xl mx-auto space-y-8"
+      >
+        <motion.div variants={itemVariants} className="text-center">
           <h2 className="text-2xl font-bold font-orbitron text-white flex items-center justify-center gap-2">
             <Mail className="text-cyan-400 w-5 h-5" /> secure_connect.sh
           </h2>
           <p className="text-zinc-400 text-sm mt-1">Send a direct message packet to my inbox endpoint.</p>
-        </div>
+        </motion.div>
 
-        <form 
+        <motion.form 
+          variants={itemVariants}
           onSubmit={(e) => {
             e.preventDefault();
             alert("Packet transmission request compiled! Connecting to endpoint...");
@@ -287,31 +335,31 @@ export default function HUDDashboard() {
             <input
               type="text"
               placeholder="Name"
-              className="bg-zinc-900 border border-zinc-850 focus:border-cyan-400 focus:outline-none rounded-xl p-3 text-xs text-white"
+              className="bg-zinc-900 border border-zinc-850 focus:border-cyan-400 focus:outline-none rounded-xl p-3 text-xs text-white transition-colors"
               required
             />
             <input
               type="email"
               placeholder="Email"
-              className="bg-zinc-900 border border-zinc-850 focus:border-cyan-400 focus:outline-none rounded-xl p-3 text-xs text-white"
+              className="bg-zinc-900 border border-zinc-850 focus:border-cyan-400 focus:outline-none rounded-xl p-3 text-xs text-white transition-colors"
               required
             />
           </div>
           <textarea
             placeholder="Payload Details..."
             rows={4}
-            className="w-full bg-zinc-900 border border-zinc-850 focus:border-cyan-400 focus:outline-none rounded-xl p-3 text-xs text-white resize-none"
+            className="w-full bg-zinc-900 border border-zinc-850 focus:border-cyan-400 focus:outline-none rounded-xl p-3 text-xs text-white resize-none transition-colors"
             required
           />
           <button
             type="submit"
-            className="w-full py-3 rounded-xl bg-cyan-400 hover:bg-cyan-500 font-bold text-xs text-black transition-all hover:scale-[1.01]"
+            className="w-full py-3 rounded-xl bg-cyan-400 hover:bg-cyan-500 font-bold text-xs text-black transition-all hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(6,182,212,0.4)]"
           >
             TRANSMIT PACKET
           </button>
-        </form>
+        </motion.form>
 
-        <div className="flex justify-center gap-6 pt-4 text-xs font-mono text-zinc-500">
+        <motion.div variants={itemVariants} className="flex justify-center gap-6 pt-4 text-xs font-mono text-zinc-500">
           <a href={PORTFOLIO_DATA.profile.github} target="_blank" rel="noreferrer" className="hover:text-cyan-400 transition-colors">
             GITHUB
           </a>
@@ -319,8 +367,8 @@ export default function HUDDashboard() {
           <a href={PORTFOLIO_DATA.profile.linkedin} target="_blank" rel="noreferrer" className="hover:text-cyan-400 transition-colors">
             LINKEDIN
           </a>
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
 
     </div>
   );

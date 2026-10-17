@@ -9,15 +9,15 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        orbitron: ["var(--font-orbitron)"],
+        playfair: ["var(--font-playfair)", "serif"],
         sans: ["var(--font-space-grotesk)", "sans-serif"],
       },
       colors: {
-        background: "var(--bg-base)",
-        surface: "var(--surface)",
-        primary: "var(--text-main)",
-        muted: "var(--text-muted)",
-        accent: "var(--accent)",
+        background: "#000000",
+        surface: "#111111",
+        primary: "#F3F4F6",
+        muted: "#9CA3AF",
+        accent: "#E5E7EB",
       },
     },
   },
