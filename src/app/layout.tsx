@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${spaceGrotesk.className} ${spaceGrotesk.variable} ${playfair.variable} bg-black text-white antialiased`}>
+      <body className={`${spaceGrotesk.className} ${spaceGrotesk.variable} ${playfair.variable} bg-background text-white antialiased`}>
         <FaviconAnimator frames={["/favicon-0.svg","/favicon-1.svg"]} interval={350} />
         <CustomCursor />
         <LenisProvider>

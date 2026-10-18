@@ -13,8 +13,8 @@ const config: Config = {
         sans: ["var(--font-space-grotesk)", "sans-serif"],
       },
       colors: {
-        background: "#000000",
-        surface: "#111111",
+        background: "#070a12",
+        surface: "#0b111d",
         primary: "#F3F4F6",
         muted: "#9CA3AF",
         accent: "#E5E7EB",

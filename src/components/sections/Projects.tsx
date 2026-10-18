@@ -19,7 +19,7 @@ const getDomainIcon = (category: string) => {
 
 export default function Projects() {
   return (
-    <section className="w-full bg-surface text-white py-24 md:py-32 relative z-10 rounded-t-[2.5rem] md:rounded-t-[3.5rem] -mt-10 border-t border-white/10 shadow-[0_-20px_50px_rgba(0,0,0,0.8)]">
+    <section id="work" className="w-full scroll-mt-4 bg-surface text-white py-24 md:py-32 relative z-10 rounded-t-[2.5rem] md:rounded-t-[3.5rem] -mt-10 border-t border-white/10 shadow-[0_-20px_50px_rgba(0,0,0,0.8)]">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 md:mb-20 pb-8 border-b border-white/10 gap-6">

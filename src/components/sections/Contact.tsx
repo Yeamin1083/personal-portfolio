@@ -15,7 +15,7 @@ export default function Contact() {
   const y = useTransform(scrollYProgress, [0, 1], [-100, 0]);
 
   return (
-    <footer ref={container} className="w-full h-screen bg-black text-white relative z-0 overflow-hidden flex flex-col items-center justify-center">
+    <footer id="contact" ref={container} className="w-full h-screen bg-background text-white relative z-0 overflow-hidden flex flex-col items-center justify-center">
       <motion.div style={{ y }} className="text-center w-full max-w-4xl px-4">
         <h2 className="text-sm uppercase tracking-widest text-muted mb-10">Let's Connect</h2>
         

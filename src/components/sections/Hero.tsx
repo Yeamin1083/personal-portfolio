@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { PORTFOLIO_DATA } from "@/lib/portfolioData";
 import { Canvas, useFrame } from "@react-three/fiber";
@@ -8,19 +8,18 @@ import { Points, PointMaterial } from "@react-three/drei";
 
 function StarBackground(props: any) {
   const ref = useRef<any>();
-  // We'll just generate simple particles
-  const sphere = new Float32Array(5000 * 3);
-  for (let i = 0; i < 5000; i++) {
-    const r = 2.5 * Math.sqrt(Math.random());
-    const theta = Math.random() * 2 * Math.PI;
-    const phi = Math.acos(2 * Math.random() - 1);
-    const x = r * Math.sin(phi) * Math.cos(theta);
-    const y = r * Math.sin(phi) * Math.sin(theta);
-    const z = r * Math.cos(phi);
-    sphere[i * 3] = x;
-    sphere[i * 3 + 1] = y;
-    sphere[i * 3 + 2] = z;
-  }
+  const sphere = useMemo(() => {
+    const arr = new Float32Array(5000 * 3);
+    for (let i = 0; i < 5000; i++) {
+      const r = 2.5 * Math.sqrt(Math.random());
+      const theta = Math.random() * 2 * Math.PI;
+      const phi = Math.acos(2 * Math.random() - 1);
+      arr[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+      arr[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+      arr[i * 3 + 2] = r * Math.cos(phi);
+    }
+    return arr;
+  }, []);
 
   useFrame((state, delta) => {
     if (ref.current) {
@@ -47,14 +46,24 @@ export default function Hero() {
 
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+  const [first, last] = PORTFOLIO_DATA.profile.name.split(" ");
+
+  // Without this, browsers lacking WebGL crash the whole page.
+  const [hasWebGL, setHasWebGL] = useState(false);
+  useEffect(() => {
+    setHasWebGL(!!document.createElement("canvas").getContext("webgl"));
+  }, []);
 
   return (
-    <section ref={container} className="relative h-screen w-full flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 z-0 opacity-50">
-        <Canvas camera={{ position: [0, 0, 1] }}>
-          <StarBackground />
-        </Canvas>
-      </div>
+    <section id="top" ref={container} className="relative h-screen w-full flex items-center justify-center overflow-hidden">
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_70%_55%_at_50%_45%,rgba(65,97,154,0.28),transparent_70%)]" />
+      {hasWebGL && (
+        <div className="absolute inset-0 z-0 opacity-50">
+          <Canvas camera={{ position: [0, 0, 1] }} dpr={[1, 1.5]}>
+            <StarBackground />
+          </Canvas>
+        </div>
+      )}
 
       <motion.div style={{ y, opacity }} className="relative z-10 flex flex-col items-center justify-center text-center px-4">
         <motion.p
@@ -66,15 +75,20 @@ export default function Hero() {
           {PORTFOLIO_DATA.profile.title}
         </motion.p>
         
-        <motion.h1
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="font-playfair text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight text-primary leading-tight"
-        >
-          {PORTFOLIO_DATA.profile.name.split(' ')[0]} <br />
-          <span className="italic text-gray-500">{PORTFOLIO_DATA.profile.name.split(' ')[1]}</span>
-        </motion.h1>
+        <h1 className="font-playfair text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight text-primary leading-tight">
+          {[first, last].map((word, i) => (
+            <span key={word} className="block overflow-hidden">
+              <motion.span
+                className={`block ${i === 1 ? "italic text-gray-500" : ""}`}
+                initial={{ y: "110%" }}
+                animate={{ y: 0 }}
+                transition={{ duration: 1.1, delay: 0.4 + i * 0.15, ease: [0.16, 1, 0.3, 1] }}
+              >
+                {word}
+              </motion.span>
+            </span>
+          ))}
+        </h1>
       </motion.div>
 
       <motion.div
